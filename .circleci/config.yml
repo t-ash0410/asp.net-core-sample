@@ -1,19 +1,14 @@
 version: 2.1
-
-orbs:
-  windows: circleci/windows@2.2.0
-
 jobs:
   build:
-    description: Build application with Release configuration
-    executor:
-      name: windows/default
+    docker:
+      - image: microsoft/dotnet:2.2-sdk
     steps:
       - checkout
-      - run:
-          name: "Build Application according to some given configuration"
-          command: dotnet.exe build $SolutionName --configuration Release
+      - run: dotnet restore
+      - run: dotnet build $SolutionName
 workflows:
-  build_and_deploy:
+  version: 2.1
+  buildAll:
     jobs:
       - build
