@@ -1,32 +1,19 @@
-version: 2
+version: 2.1
+
+orbs:
+  windows: circleci/windows@2.2.0
 
 jobs:
-   build:
-       docker:
-           - image: alpine
-       steps:
-           - checkout
-           - run:
-               name: Echo Test
-               command: echo "CircleCI EC2 Test"
-   # EC2 に SSH 接続・デプロイを実行
-   deploy:
-       machine:
-           image: circleci/classic:edge
-       steps:
-           - checkout
-           - add_ssh_keys:
-           - run: ssh ${USER_NAME}@${HOST_NAME} 'cd ~/working && git pull origin master'
-
+  build:
+    description: Build application with Release configuration
+    executor:
+      name: windows/default
+    steps:
+      - checkout
+      - run:
+          name: "Build Application according to some given configuration"
+          command: dotnet.exe build --configuration Release
 workflows:
-   version: 2
-   build_and_deploy:
-       jobs:
-           - build
-           - deploy:
-               requires:
-                   - build
-               # master ブランチに push された場合のみ deploy
-               filters:
-                   branches:
-                       only: master
+  build_and_deploy:
+    jobs:
+      - build:
