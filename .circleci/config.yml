@@ -8,7 +8,7 @@ jobs:
       - run:
           name: build 
           command: dotnet publish ${SRC_APP_DIR}/${SOLUSION_NAME} -c Release
-      - add_ssh_keys:
+      - add_ssh_keys
       - run: 
           name: deploy
           command: 
