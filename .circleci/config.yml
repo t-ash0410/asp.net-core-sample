@@ -12,11 +12,11 @@ jobs:
       - run: 
           name: deploy
           command: 
-            apt-get update
-            apt-get install zip unzip
-            zip -r ${SRC_APP_DIR}/publish.zip ${SRC_APP_DIR}/bin/Release
-            scp publish.zip ${USER_NAME}@${HOST_NAME}:${DST_APP_DIR}
-            ssh ${USER_NAME}@${HOST_NAME} "unzip ${DST_APP_DIR}/publish.zip"
+            apt-get update \
+            apt-get install zip unzip \
+            zip -r ${SRC_APP_DIR}/publish.zip ${SRC_APP_DIR}/bin/Release \
+            scp publish.zip ${USER_NAME}@${HOST_NAME}:${DST_APP_DIR} \
+            ssh ${USER_NAME}@${HOST_NAME} "unzip ${DST_APP_DIR}/publish.zip" \
 workflows:
   version: 2.1
   buildAll:
