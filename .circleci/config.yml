@@ -5,7 +5,16 @@ jobs:
       - image: mcr.microsoft.com/dotnet/core/sdk:3.1
     steps:
       - checkout
-      - run: dotnet build $SolutionName
+      - run:
+          name: build 
+          command: dotnet publish ${SRC_APP_DIR}/${SOLUSION_NAME} -c Release
+      - add_ssh_keys:
+      - run: 
+          name: deploy
+          command: 
+            zip -r ${SRC_APP_DIR}/publish.zip ${SRC_APP_DIR}/bin/Release
+            scp -r publish.zip ${USER_NAME}@${HOST_NAME}:${DST_APP_DIR}
+            ssh ${USER_NAME}@${HOST_NAME} "unzip ${DST_APP_DIR}/publish.zip"
 workflows:
   version: 2.1
   buildAll:
