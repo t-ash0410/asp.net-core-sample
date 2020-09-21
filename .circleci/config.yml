@@ -9,20 +9,21 @@ jobs:
           name: build 
           command: dotnet publish ${SRC_APP_DIR}/${SOLUSION_NAME} -c Release
       - run: 
-          name: zip install
-          command: 
-            apt-get update \
-            apt-get install zip unzip
+          name: apt-get update
+          command: apt-get update
+      - run: 
+        name: zip install
+        command: apt-get install zip
       - run:
           name: zip
-          command: zip -r ${SRC_APP_DIR}/publish.zip ${SRC_APP_DIR}/bin/Release \
+          command: zip -r ${SRC_APP_DIR}/publish.zip ${SRC_APP_DIR}/bin/Release
       - add_ssh_keys
       - run: 
           name: deploy
-          command: scp publish.zip ${USER_NAME}@${HOST_NAME}:${DST_APP_DIR} \
+          command: scp publish.zip ${USER_NAME}@${HOST_NAME}:${DST_APP_DIR}
       - run:
           name: unzip
-          command: ssh ${USER_NAME}@${HOST_NAME} "unzip ${DST_APP_DIR}/publish.zip" \
+          command: ssh ${USER_NAME}@${HOST_NAME} "unzip ${DST_APP_DIR}/publish.zip"
 workflows:
   version: 2.1
   buildAll:
