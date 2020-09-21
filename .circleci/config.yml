@@ -8,26 +8,27 @@ jobs:
       - run:
           name: build 
           command: dotnet publish ${SRC_APP_DIR}/${SOLUSION_NAME} -c Release
-      - run: 
-          name: apt-get update
-          command: apt-get update
-      - run: 
-          name: zip install
-          command: apt-get -y install zip
-      - run:
-          name: zip
-          command: zip -r ${SRC_APP_DIR}/publish.zip ${SRC_APP_DIR}/bin/Release
-      - add_ssh_keys:
-          fingerprints:
-            - "${FINGERPRINT}"
-      - run: 
-          name: deploy
-          command: scp -oStrictHostKeyChecking=no ${SRC_APP_DIR}/publish.zip ${USER_NAME}@${HOST_NAME}:${DST_APP_DIR}
-      - run:
-          name: unzip
-          command: ssh ${USER_NAME}@${HOST_NAME} "unzip ${DST_APP_DIR}/publish.zip"
+      - persist_to_workspace:
+        root: '.'
+        paths:
+            - ${SRC_APP_DIR}/bin/Release/publish
+  deploy:
+    machine:
+        enabled: true
+    steps:
+        - attach_workspace:
+            at: '.'
+        - add_ssh_keys
+        - run: scp -oStrictHostKeyChecking=no -r ${SRC_APP_DIR} ${USER_NAME}@${HOST_NAME}:${DST_APP_DIR}
 workflows:
   version: 2.1
-  buildAll:
+  build_and_deploy:
     jobs:
       - build
+      - deploy:
+        requires:
+            - build 
+        filters:
+            branches:
+                only:
+                    - master
