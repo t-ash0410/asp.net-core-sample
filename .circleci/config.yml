@@ -17,7 +17,9 @@ jobs:
       - run:
           name: zip
           command: zip -r ${SRC_APP_DIR}/publish.zip ${SRC_APP_DIR}/bin/Release
-      - add_ssh_keys
+      - add_ssh_keys:
+          fingerprints:
+            - "${FINGERPRINT}"
       - run: 
           name: deploy
           command: scp publish.zip ${USER_NAME}@${HOST_NAME}:${DST_APP_DIR}
