@@ -9,9 +9,9 @@ jobs:
           name: build 
           command: dotnet publish ${SRC_APP_DIR}/${SOLUSION_NAME} -c Release
       - persist_to_workspace:
-        root: '.'
-        paths:
-            - ${SRC_APP_DIR}/bin/Release/publish
+          root: '.'
+          paths:
+              - ${SRC_APP_DIR}/bin/Release/publish
   deploy:
     machine:
         enabled: true
@@ -26,9 +26,9 @@ workflows:
     jobs:
       - build
       - deploy:
-        requires:
-            - build 
-        filters:
-            branches:
-                only:
-                    - master
+          requires:
+              - build 
+          filters:
+              branches:
+                  only:
+                      - master
