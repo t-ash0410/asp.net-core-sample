@@ -13,7 +13,7 @@ jobs:
           command: apt-get update
       - run: 
           name: zip install
-          command: apt-get install zip
+          command: apt-get -y install zip
       - run:
           name: zip
           command: zip -r ${SRC_APP_DIR}/publish.zip ${SRC_APP_DIR}/bin/Release
