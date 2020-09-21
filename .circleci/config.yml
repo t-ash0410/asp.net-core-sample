@@ -22,7 +22,7 @@ jobs:
             - "${FINGERPRINT}"
       - run: 
           name: deploy
-          command: scp -oStrictHostKeyChecking=no ${SRC_APP_DIR}publish.zip ${USER_NAME}@${HOST_NAME}:${DST_APP_DIR}
+          command: scp -oStrictHostKeyChecking=no ${SRC_APP_DIR}/publish.zip ${USER_NAME}@${HOST_NAME}:${DST_APP_DIR}
       - run:
           name: unzip
           command: ssh ${USER_NAME}@${HOST_NAME} "unzip ${DST_APP_DIR}/publish.zip"
