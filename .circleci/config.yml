@@ -3,23 +3,26 @@ jobs:
   build:
     docker:
       - image: mcr.microsoft.com/dotnet/core/sdk:3.1
+    working_directory: ~/dotnet-project
     steps:
       - checkout
+      - attach_workspace:
+        at: ~/dotnet-project
       - run:
           name: build 
-          command: dotnet publish ${SRC_APP_DIR}/${SOLUSION_NAME} -c Release
+          command: dotnet publish Hello/Hello.csproj -c Release
       - persist_to_workspace:
-          root: '${SRC_APP_DIR}/bin/Release'
-          paths:
-              - publish/*
+          root: '.'
+          paths: Hello/bin/Release/netcoreapp3.1/publish/*
   deploy:
     machine:
         enabled: true
+    working_directory: ~/dotnet-project
     steps:
         - attach_workspace:
-            at: '${SRC_APP_DIR}/bin/Release'
+            at: ~/dotnet-project
         - add_ssh_keys
-        - run: scp -oStrictHostKeyChecking=no -r ${SRC_APP_DIR} ${USER_NAME}@${HOST_NAME}:${DST_APP_DIR}
+        - run: scp -oStrictHostKeyChecking=no -r Hello/bin/Release/netcoreapp3.1/publish ${USER_NAME}@${HOST_NAME}:${DST_APP_DIR}
 workflows:
   version: 2.1
   build_and_deploy:
