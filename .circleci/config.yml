@@ -11,10 +11,10 @@ jobs:
           at: ~/dotnet-project
       - run:
           name: build 
-          command: dotnet publish Hello/Hello.csproj -c Release
+          command: dotnet publish ${PROJECT_PATH} -c Release
       - persist_to_workspace:
           root: '.'
-          paths: Hello/bin/Release/netcoreapp3.1/publish/*
+          paths: ${BIN_DIR}/*
   
   deploy:
     machine:
@@ -24,7 +24,8 @@ jobs:
         - attach_workspace:
             at: ~/dotnet-project
         - add_ssh_keys
-        - run: scp -oStrictHostKeyChecking=no -r Hello/bin/Release/netcoreapp3.1/publish ${USER_NAME}@${HOST_NAME}:${DST_APP_DIR}
+        - run: ls Hello
+        - run: scp -oStrictHostKeyChecking=no -r ${BIN_DIR} ${USER_NAME}@${HOST_NAME}:${DST_APP_DIR}
 
 workflows:
   version: 2.1
