@@ -24,7 +24,7 @@ jobs:
         - attach_workspace:
             at: ~/dotnet-project
         - add_ssh_keys
-        - run: ls Hello
+        - run: ls Hello/bin/Release/netcoreapp3.1/publish
         - run: scp -oStrictHostKeyChecking=no -r ${BIN_DIR} ${USER_NAME}@${HOST_NAME}:${DST_APP_DIR}
 
 workflows:
