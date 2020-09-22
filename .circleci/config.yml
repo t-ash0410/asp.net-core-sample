@@ -7,7 +7,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-        at: ~/dotnet-project
+          at: ~/dotnet-project
       - run:
           name: build 
           command: dotnet publish Hello/Hello.csproj -c Release
