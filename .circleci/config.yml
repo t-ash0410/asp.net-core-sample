@@ -1,4 +1,5 @@
 version: 2.1
+
 jobs:
   build:
     docker:
@@ -14,6 +15,7 @@ jobs:
       - persist_to_workspace:
           root: '.'
           paths: Hello/bin/Release/netcoreapp3.1/publish/*
+  
   deploy:
     machine:
         enabled: true
@@ -23,6 +25,7 @@ jobs:
             at: ~/dotnet-project
         - add_ssh_keys
         - run: scp -oStrictHostKeyChecking=no -r Hello/bin/Release/netcoreapp3.1/publish ${USER_NAME}@${HOST_NAME}:${DST_APP_DIR}
+
 workflows:
   version: 2.1
   build_and_deploy:
@@ -30,8 +33,4 @@ workflows:
       - build
       - deploy:
           requires:
-              - build 
-          filters:
-              branches:
-                  only:
-                      - master
+            - build
