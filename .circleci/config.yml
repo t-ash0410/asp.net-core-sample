@@ -9,15 +9,15 @@ jobs:
           name: build 
           command: dotnet publish ${SRC_APP_DIR}/${SOLUSION_NAME} -c Release
       - persist_to_workspace:
-          root: '.'
+          root: '${SRC_APP_DIR}/bin/Release'
           paths:
-              - ${SRC_APP_DIR}/bin/Release/publish
+              - publish/*
   deploy:
     machine:
         enabled: true
     steps:
         - attach_workspace:
-            at: '.'
+            at: '${SRC_APP_DIR}/bin/Release'
         - add_ssh_keys
         - run: scp -oStrictHostKeyChecking=no -r ${SRC_APP_DIR} ${USER_NAME}@${HOST_NAME}:${DST_APP_DIR}
 workflows:
