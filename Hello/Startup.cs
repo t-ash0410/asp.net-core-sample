@@ -24,6 +24,13 @@ namespace Hello
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddScoped<Lib.Infrastructure.DataAccessContext, Lib.Infrastructure.DataAccessContext>((s) => {
+                var ctx = new Lib.Infrastructure.DataAccessContext($"server=172.22.0.2;port=3306;uid=root;pwd=password;database=asp_net_sample");
+                ctx.Open();
+                return ctx;
+            });
+            services.AddTransient<Lib.Books.Repository.IBookRepository, Lib.Books.Repository.BookRepository>();
+            services.AddTransient<Lib.Books.UseCase.IBookInteractor, Lib.Books.UseCase.BookInteractor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

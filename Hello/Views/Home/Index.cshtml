@@ -2,7 +2,33 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+@section Layouts {
+    <link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
+}
+
+<div class='main-container'>
+    <div class='main-header'>
+        header
+    </div>
+    <div class='main-body'>
+        <div class='inner-body left-body'>
+            left
+        </div>
+        <div class='inner-body center-body'>
+            center
+        </div>
+        <div class='inner-body right-body'>
+            right
+        </div>
+    </div>
 </div>
+
+@section Scripts {
+    <script src="~/js/home.js" asp-append-version="true"></script>
+    <script>
+        $(function(){
+            var instance = new Books($(".center-body"));
+            instance.render();
+        });
+    </script>
+}
