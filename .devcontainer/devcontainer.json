@@ -1,15 +1,18 @@
 {
-	"name": "asp.net core hello",
-	"build": {
-		"dockerfile": "Dockerfile",
-		"context": "..",
-		"args": {  }
-	},
-	"settings": { 
-		"terminal.integrated.shell.linux": "/bin/bash"
-	},
+	"name": "asp.net core",
+	"dockerComposeFile": [
+	  "docker-compose.yml"
+	],
+	"workspaceFolder": "/dotnet-app",
+	"service": "dotnet_web",
 	"extensions": [
 		"ms-dotnettools.csharp"
 	],
-	"forwardPorts": [8080]
+	"settings": {
+	  "editor.tabSize": 2,
+	  "files.insertFinalNewline": true,
+	  "files.trimFinalNewlines": true,
+	  "terminal.integrated.shell.linux": "/bin/bash"
+	},
+	"shutdownAction": "none"
 }

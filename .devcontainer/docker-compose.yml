@@ -1,0 +1,37 @@
+version: '3'
+
+services:
+  dotnet_db:
+    container_name: dotnet_db
+    build:
+      context: .
+      dockerfile: ./db/Dockerfile
+    hostname: dotnet_db
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_USER: root
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: password
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci --skip-character-set-client-handshake
+    volumes:
+      - "db-data:/var/lib/mysql"
+      - "./db/my.conf:/etc/mysql/my.conf"
+      - "./db/init/:/docker-entrypoint-initdb.d"
+  dotnet_web:
+    links:
+      - dotnet_db
+    build:
+      context: .
+      dockerfile: ./web/Dockerfile
+    container_name: dotnet_web
+    ports:
+      - "8080:8080"
+    volumes:
+      - ../:/dotnet-app
+    command: /bin/bash -c "while sleep 1000; do :; done"
+    stdin_open: true
+
+volumes:
+  db-data:
+    driver: local
