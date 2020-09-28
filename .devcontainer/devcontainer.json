@@ -6,7 +6,8 @@
 	"workspaceFolder": "/dotnet-app",
 	"service": "dotnet_web",
 	"extensions": [
-		"ms-dotnettools.csharp"
+		"ms-dotnettools.csharp",
+		"jmrog.vscode-nuget-package-manager"
 	],
 	"settings": {
 	  "editor.tabSize": 2,
