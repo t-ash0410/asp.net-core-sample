@@ -1,10 +1,8 @@
-using System.Data.Common;
 using MySql.Data.MySqlClient;
 
 namespace Lib.Infrastructure
 {
   public class DataAccessContext{
-    private bool _initialized = false;
     private string _connectionString;
     public MySqlConnection Connection { get; private set; }
     public MySqlCommand Command { get; private set; }
@@ -22,12 +20,18 @@ namespace Lib.Infrastructure
         this.Command = this.Connection.CreateCommand();
       }
       catch{
-        if(this.Connection != null){
-          this.Connection.Dispose();
-        }
+        this.Close();
         throw;
       }
-      this._initialized = true;
+    }
+
+    public void Close(){
+      if(this.Command != null){
+        this.Command.Dispose();
+      }
+      if(this.Connection != null){
+        this.Connection.Dispose();
+      }
     }
   }
 }

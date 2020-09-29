@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Lib.Books.UseCase;
+using Hello.Filters;
 
 namespace Hello.Controllers
 {
@@ -21,6 +22,7 @@ namespace Hello.Controllers
         }
 
         [HttpGet]
+        [ServiceFilter(typeof(DataAccessFilterBase))]
         public IActionResult Get()
         {
             var books = this._interactor.GetBookOverviews();
