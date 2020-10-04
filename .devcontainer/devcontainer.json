@@ -7,7 +7,9 @@
 	"service": "dotnet_web",
 	"extensions": [
 		"ms-dotnettools.csharp",
-		"jmrog.vscode-nuget-package-manager"
+		"jmrog.vscode-nuget-package-manager",
+		"ms-azuretools.vscode-docker",
+		"p1c2u.docker-compose"
 	],
 	"settings": {
 	  "editor.tabSize": 2,

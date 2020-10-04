@@ -1,3 +1,4 @@
+using System;
 using MySql.Data.MySqlClient;
 
 namespace Lib.Infrastructure

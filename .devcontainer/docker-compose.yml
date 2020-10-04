@@ -18,9 +18,51 @@ services:
       - "db-data:/var/lib/mysql"
       - "./db/my.conf:/etc/mysql/my.conf"
       - "./db/init/:/docker-entrypoint-initdb.d"
+    networks:
+      - esnet
+  dotnet_es01:
+    build: 
+      context: .
+      dockerfile: ./es/Dockerfile
+    container_name: es01
+    environment:
+      - node.name=es01
+      - discovery.seed_hosts=es02
+      - cluster.initial_master_nodes=es01,es02
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - esdata01:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+    networks:
+      - esnet
+  dotnet_es02:
+    build: 
+      context: .
+      dockerfile: ./es/Dockerfile
+    container_name: es02
+    environment:
+      - node.name=es02
+      - discovery.seed_hosts=es01
+      - cluster.initial_master_nodes=es01,es02
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - esdata02:/usr/share/elasticsearch/data
+    networks:
+      - esnet
   dotnet_web:
-    links:
-      - dotnet_db
     build:
       context: .
       dockerfile: ./web/Dockerfile
@@ -28,12 +70,22 @@ services:
     ports:
       - "8080:8080"
     environment:
-      DB_CONNECTION_STRING: "server=172.22.0.2;port=3306;uid=root;pwd=password;database=asp_net_sample"
+      DB_CONNECTION_STRING: "server=172.23.0.5;port=3306;uid=root;pwd=password;database=asp_net_sample"
+      ELASTIC_SEARCH_SERVER: "http://172.23.0.3:9200"
     volumes:
       - ../:/dotnet-app
     command: /bin/bash -c "while sleep 1000; do :; done"
     stdin_open: true
+    networks:
+      - esnet
 
 volumes:
   db-data:
     driver: local
+  esdata01:
+    driver: local
+  esdata02:
+    driver: local
+
+networks:
+  esnet:

@@ -28,5 +28,11 @@ namespace Hello.Controllers
             var books = this._interactor.GetBookOverviews();
             return new JsonResult(books);
         }
+
+        [HttpGet]
+        public IActionResult Search(string word){
+            var books = this._interactor.Search(word);
+            return new JsonResult(books);
+        }
     }
 }

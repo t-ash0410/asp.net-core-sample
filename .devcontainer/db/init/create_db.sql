@@ -6,25 +6,30 @@ CREATE IF NOT EXISTS TABLE books (
      `id` MEDIUMINT NOT NULL AUTO_INCREMENT,
      `name` VARCHAR(255) NOT NULL,
      `description` TEXT NOT NULL,
+     `category` TEXT NOT NULL,
      PRIMARY KEY (id)
 );
 
 INSERT INTO books
 (
 	`name`,
-  `description`
+  `description`,
+  `category`
 )
 VALUES
 (
   'book1',
-  'test book'
+  'test book',
+  'category1'
 ),
 (
   'book2',
-  'test book2'
+  'test book2',
+  '分類2'
 ),
 (
   '本３',
-  'テスト用の本'
+  'テスト用の本',
+  'category1'
 )
 ;

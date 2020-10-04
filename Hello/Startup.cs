@@ -25,8 +25,11 @@ namespace Hello
         {
             services.AddControllersWithViews();
             var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
+            var searchUrl = Environment.GetEnvironmentVariable("ELASTIC_SEARCH_SERVER");
             services.AddScoped<Lib.Infrastructure.DataAccessContext>((s) => new Lib.Infrastructure.DataAccessContext(connectionString));
+            services.AddScoped<Lib.Infrastructure.BigDataAccessContext>((s) => new Lib.Infrastructure.BigDataAccessContext(searchUrl));
             services.AddScoped<Lib.Books.Repository.IBookRepository, Lib.Books.Repository.BookRepository>();
+            services.AddScoped<Lib.Books.Repository.IBookSearchRepository, Lib.Books.Repository.BookSearchRepository>();
             services.AddScoped<Lib.Books.UseCase.IBookInteractor, Lib.Books.UseCase.BookInteractor>();
             services.AddScoped<Filters.DataAccessFilterBase, Filters.DataAccessFilter>();
         }
