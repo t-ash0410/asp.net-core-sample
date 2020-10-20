@@ -1,40 +1,49 @@
 var Books = function(container){
   this._container = container;
+  this._http = {
+    init: function(callback){
+      $.ajax("/Books/Init", { type: "POST", dataType: 'json'}).done(function(res){
+        callback(res);
+      });
+    },
+    getBook: function(callback){
+      $.ajax("/Books/Get", { type: "GET", data: { }, dataType: 'json'}).done(function(res){
+        callback(res);
+      });
+    },
+    search: function(word, callback){
+      $.ajax("/Books/Search", { type: "GET", data: { word: word }, dataType: 'json'}).done(function(res){
+        callback(res);
+      });
+    }
+  }
 
   this.render = function(){
-    this._container.html(this._createBaseTag());
-    this._refresh();
+    this._attachEvent();
+
+    this._http.getBook((books) => {
+      this._refresh(books);
+    });
   }
 
-  this._refresh = function(){
-    var self = this;
-    $.ajax("/Books/Get",
-      {
-        type: "GET",
-        data: { },
-        dataType: 'json'
-      }
-    ).done(function(res){
-      var tag = "";
-      $.each(res, function(){
-        tag += self._createRowTag(this);
-      })
-      self._container.find(".table tbody").html(tag);
-    })
+  this._attachEvent = function(){
+    this._container.find("#exec-search").on("click", () => {
+      const word = this._container.find("#search-word").val();
+      this._http.search(word, (books) => {
+        this._refresh(books);
+      });
+    });
+    this._container.find("#env-init").on("click", () => {
+      this._http.init(() => {
+        this._http.getBook((books) => {
+          this._refresh(books);
+        });        
+      });
+    });
   }
 
-  this._createBaseTag = function(){
-    return ""
-      + "<table class='table'>"
-      + " <thead>"
-      + "   <tr>"
-      + "     <td>タイトル</td>"
-      + "     <td>説明</td>"
-      + "   </tr>"
-      + " </thead>"
-      + " <tbody>"
-      + " </tbody>"
-      + "</table>"
+  this._refresh = function(books){
+    this._container.find(".main-body table tbody").html(books.map(r => this._createRowTag(r)).join(""));
   }
 
   this._createRowTag = function(book){
@@ -44,4 +53,6 @@ var Books = function(container){
       + " <td>" + book.description + "</td>"
       + "</tr>";
   }
+
+  
 }

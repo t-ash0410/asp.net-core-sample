@@ -21,6 +21,13 @@ namespace Hello.Controllers
             this._interactor = interactor;
         }
 
+        [HttpPost]
+        [ServiceFilter(typeof(DataAccessFilterBase))]
+        public IActionResult Init(){
+            this._interactor.Init();
+            return new JsonResult(new {});
+        }
+
         [HttpGet]
         [ServiceFilter(typeof(DataAccessFilterBase))]
         public IActionResult Get()
