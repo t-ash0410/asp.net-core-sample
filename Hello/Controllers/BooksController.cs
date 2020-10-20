@@ -24,8 +24,8 @@ namespace Hello.Controllers
         [HttpPost]
         [ServiceFilter(typeof(DataAccessFilterBase))]
         public IActionResult Init(){
-            this._interactor.Init();
-            return new JsonResult(new {});
+            var books = this._interactor.Init();
+            return new JsonResult(books);
         }
 
         [HttpGet]
@@ -39,6 +39,13 @@ namespace Hello.Controllers
         [HttpGet]
         public IActionResult Search(string word){
             var books = this._interactor.Search(word);
+            return new JsonResult(books);
+        }
+
+        [HttpPost]
+        [ServiceFilter(typeof(DataAccessFilterBase))]
+        public IActionResult Add(string name, string description, string category){
+            var books = this._interactor.Add(name, description, category);
             return new JsonResult(books);
         }
     }

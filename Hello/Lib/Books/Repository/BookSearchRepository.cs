@@ -31,11 +31,15 @@ namespace Lib.Books.Repository{
             .Bool(b => b
               .Should(
                 s => s.Match(m => m
-                  .Field(f => f.Description)
+                  .Field(f => f.Name)
                   .Query(word)
                 ),
                 s => s.Match(m => m
                   .Field(f => f.Description)
+                  .Query(word)
+                ),
+                s => s.Match(m => m
+                  .Field(f => f.Category)
                   .Query(word)
                 )
               )

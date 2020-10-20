@@ -4,9 +4,10 @@ using Lib.Books.Repository;
 
 namespace Lib.Books.UseCase{
   public interface IBookInteractor{
-    void Init();
+    IEnumerable<BookOverview> Init();
     IEnumerable<BookOverview> GetBookOverviews();
     IEnumerable<BookOverview> Search(string word);
+    IEnumerable<BookOverview> Add(string name, string description, string category);
   }
 
   public class BookInteractor: IBookInteractor{
@@ -18,7 +19,7 @@ namespace Lib.Books.UseCase{
       this._searchRepository = search;
     }
 
-    public void Init(){
+    public IEnumerable<BookOverview> Init(){
       this._repo.Init();
       this._searchRepository.Init();
 
@@ -31,6 +32,7 @@ namespace Lib.Books.UseCase{
         this._repo.Register(b);
         this._searchRepository.Register(b);
       });
+      return initialData;
     }
 
     public IEnumerable<BookOverview> GetBookOverviews(){
@@ -39,6 +41,13 @@ namespace Lib.Books.UseCase{
 
     public IEnumerable<BookOverview> Search(string word){
       return this._searchRepository.Search(word);
+    }
+
+    public IEnumerable<BookOverview> Add(string name, string description, string category){
+      var entity = new BookOverview(-1, name, description, category);
+      this._repo.Register(entity);
+      this._searchRepository.Register(entity);
+      return this._repo.GetBookOverviews();
     }
   }
 }

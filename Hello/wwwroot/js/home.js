@@ -15,6 +15,15 @@ var Books = function(container){
       $.ajax("/Books/Search", { type: "GET", data: { word: word }, dataType: 'json'}).done(function(res){
         callback(res);
       });
+    },
+    add: function(name, description, category, callback){
+      $.ajax("/Books/Add", { type: "POST", data: { 
+        name: name,
+        description: description,
+        category: category
+       }, dataType: 'json'}).done(function(res){
+        callback(res);
+      });
     }
   }
 
@@ -34,10 +43,17 @@ var Books = function(container){
       });
     });
     this._container.find("#env-init").on("click", () => {
-      this._http.init(() => {
-        this._http.getBook((books) => {
-          this._refresh(books);
-        });        
+      this._http.init((books) => {
+        this._refresh(books);
+      });
+    });
+    this._container.find("#exec-add-book").on("click", () => {
+      const name = this._container.find("#add-book-name").val();
+      const description = this._container.find("#add-book-description").val();
+      const category = this._container.find("#add-book-category").val();
+      this._http.add(name, description, category, (books) => {
+        this._container.find("#modal").modal("hide");
+        this._refresh(books);
       });
     });
   }
@@ -50,6 +66,7 @@ var Books = function(container){
     return ""
       + "<tr>"
       + " <td>" + book.name + "</td>"
+      + " <td>" + book.category + "</td>"
       + " <td>" + book.description + "</td>"
       + "</tr>";
   }
