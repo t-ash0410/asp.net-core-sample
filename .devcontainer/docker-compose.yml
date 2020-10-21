@@ -20,48 +20,19 @@ services:
       - "./db/init/:/docker-entrypoint-initdb.d"
     networks:
       - esnet
-  dotnet_es01:
-    build: 
+
+  dotnet_elk:
+    build:
       context: .
-      dockerfile: ./es/Dockerfile
-    container_name: es01
-    environment:
-      - node.name=es01
-      - discovery.seed_hosts=es02
-      - cluster.initial_master_nodes=es01,es02
-      - cluster.name=docker-cluster
-      - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-    volumes:
-      - esdata01:/usr/share/elasticsearch/data
-    ports:
-      - 9200:9200
+      dockerfile: ./elk/Dockerfile
+    container_name: dotnet_elk
+    ports: 
+      - 5601:5601 
+      - 9200:9200 
+      - 5044:5044
     networks:
       - esnet
-  dotnet_es02:
-    build: 
-      context: .
-      dockerfile: ./es/Dockerfile
-    container_name: es02
-    environment:
-      - node.name=es02
-      - discovery.seed_hosts=es01
-      - cluster.initial_master_nodes=es01,es02
-      - cluster.name=docker-cluster
-      - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-    volumes:
-      - esdata02:/usr/share/elasticsearch/data
-    networks:
-      - esnet
+
   dotnet_web:
     build:
       context: .
@@ -81,10 +52,6 @@ services:
 
 volumes:
   db-data:
-    driver: local
-  esdata01:
-    driver: local
-  esdata02:
     driver: local
 
 networks:
