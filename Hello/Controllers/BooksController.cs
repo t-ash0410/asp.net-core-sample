@@ -39,6 +39,7 @@ namespace Hello.Controllers
         [HttpGet]
         public IActionResult Search(string word){
             var books = this._interactor.Search(word);
+            this._logger.LogInformation($"検索結果 Search word:{word}");
             return new JsonResult(books);
         }
 
