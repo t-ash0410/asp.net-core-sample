@@ -3,34 +3,43 @@ using MySql.Data.MySqlClient;
 
 namespace Lib.Infrastructure
 {
-  public class DataAccessContext{
+  public class DataAccessContext
+  {
     private string _connectionString;
     public MySqlConnection Connection { get; private set; }
     public MySqlCommand Command { get; private set; }
 
-    public DataAccessContext(string connectionString){
+    public DataAccessContext(string connectionString)
+    {
       this._connectionString = connectionString;
     }
 
-    public void Open(){
-      try{
-        this.Connection = new MySqlConnection(){
+    public void Open()
+    {
+      try
+      {
+        this.Connection = new MySqlConnection()
+        {
           ConnectionString = this._connectionString
         };
         this.Connection.Open();
         this.Command = this.Connection.CreateCommand();
       }
-      catch{
+      catch
+      {
         this.Close();
         throw;
       }
     }
 
-    public void Close(){
-      if(this.Command != null){
+    public void Close()
+    {
+      if (this.Command != null)
+      {
         this.Command.Dispose();
       }
-      if(this.Connection != null){
+      if (this.Connection != null)
+      {
         this.Connection.Dispose();
       }
     }

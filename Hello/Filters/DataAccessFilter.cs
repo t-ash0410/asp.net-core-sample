@@ -1,12 +1,13 @@
 using Microsoft.AspNetCore.Mvc.Filters;
 using Lib.Infrastructure;
 
-namespace Hello.Filters {
+namespace Hello.Filters
+{
   public abstract class DataAccessFilterBase : ActionFilterAttribute
   {
   }
 
-  public class DataAccessFilter : DataAccessFilterBase 
+  public class DataAccessFilter : DataAccessFilterBase
   {
     private readonly DataAccessContext _ctx;
 
@@ -17,7 +18,7 @@ namespace Hello.Filters {
 
     public override void OnActionExecuting(ActionExecutingContext context)
     {
-      this._ctx.Open();    
+      this._ctx.Open();
     }
 
     public override void OnActionExecuted(ActionExecutedContext context)

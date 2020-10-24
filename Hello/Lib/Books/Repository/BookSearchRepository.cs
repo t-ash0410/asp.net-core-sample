@@ -3,29 +3,36 @@ using System.Collections.Generic;
 using Lib.Books.Entity;
 using Lib.Infrastructure;
 
-namespace Lib.Books.Repository{
-  public interface IBookSearchRepository{
+namespace Lib.Books.Repository
+{
+  public interface IBookSearchRepository
+  {
     void Init();
     IEnumerable<BookOverview> Search(string word);
     void Register(BookOverview book);
   }
-  
-  public class BookSearchRepository : IBookSearchRepository{
+
+  public class BookSearchRepository : IBookSearchRepository
+  {
     private readonly BigDataAccessContext _ctx;
 
-    public BookSearchRepository(BigDataAccessContext ctx){
+    public BookSearchRepository(BigDataAccessContext ctx)
+    {
       this._ctx = ctx;
     }
 
-    public void Init(){
+    public void Init()
+    {
       var name = "books";
-      if(this._ctx.Client.Indices.Exists(name).Exists){
+      if (this._ctx.Client.Indices.Exists(name).Exists)
+      {
         this._ctx.Client.Indices.Delete(name);
       }
       this._ctx.Client.Indices.Create("books", index => index.Map<BookOverview>(m => m.AutoMap()));
     }
 
-    public IEnumerable<BookOverview> Search(string word){
+    public IEnumerable<BookOverview> Search(string word)
+    {
       var res = this._ctx.Client.Search<BookOverview>((s => s
           .Query(q => q
             .Bool(b => b
@@ -51,7 +58,8 @@ namespace Lib.Books.Repository{
       return res.Hits.Select(_ => _.Source);
     }
 
-    public void Register(BookOverview book){
+    public void Register(BookOverview book)
+    {
       this._ctx.Client.IndexDocument(book);
     }
 

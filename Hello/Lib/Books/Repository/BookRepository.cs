@@ -2,38 +2,46 @@ using System.Collections.Generic;
 using Lib.Books.Entity;
 using Lib.Infrastructure;
 
-namespace Lib.Books.Repository{
-  public interface IBookRepository{
+namespace Lib.Books.Repository
+{
+  public interface IBookRepository
+  {
     void Init();
     IEnumerable<BookOverview> GetBookOverviews();
     void Register(BookOverview book);
   }
 
-  public class BookRepository: IBookRepository{
+  public class BookRepository : IBookRepository
+  {
     private readonly DataAccessContext _ctx;
-    public BookRepository(DataAccessContext ctx){
+    public BookRepository(DataAccessContext ctx)
+    {
       this._ctx = ctx;
     }
 
-    public void Init(){
+    public void Init()
+    {
       this._ctx.Command.CommandText = $@"
-        DROP TABLE IF EXISTS books;
-        CREATE TABLE IF NOT EXISTS books (
-            `id` MEDIUMINT NOT NULL AUTO_INCREMENT,
-            `name` VARCHAR(255) NOT NULL,
-            `description` TEXT NOT NULL,
-            `category` TEXT NOT NULL,
-            PRIMARY KEY (id)
-        );";
-        
+DROP TABLE IF EXISTS books;
+CREATE TABLE IF NOT EXISTS books (
+    `id` MEDIUMINT NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(255) NOT NULL,
+    `description` TEXT NOT NULL,
+    `category` TEXT NOT NULL,
+    PRIMARY KEY (id)
+);";
+
       this._ctx.Command.ExecuteNonQuery();
     }
 
-    public IEnumerable<BookOverview> GetBookOverviews(){
+    public IEnumerable<BookOverview> GetBookOverviews()
+    {
       var result = new List<BookOverview>();
       this._ctx.Command.CommandText = "SELECT * FROM books";
-      using(var reader = this._ctx.Command.ExecuteReader()){
-        while(reader.Read()){
+      using (var reader = this._ctx.Command.ExecuteReader())
+      {
+        while (reader.Read())
+        {
           var id = int.Parse(reader["id"].ToString());
           var name = reader["name"].ToString();
           var description = reader["description"].ToString();
@@ -44,21 +52,21 @@ namespace Lib.Books.Repository{
       return result;
     }
 
-    public void Register(BookOverview book){
+    public void Register(BookOverview book)
+    {
       this._ctx.Command.CommandText = $@"
-        INSERT INTO books
-        (
-          `name`,
-          `description`,
-          `category`
-        )
-        VALUES
-        (
-          @name,
-          @description,
-          @category
-        )
-      ";
+INSERT INTO books
+(
+  `name`,
+  `description`,
+  `category`
+)
+VALUES
+(
+  @name,
+  @description,
+  @category
+)";
       this._ctx.Command.Parameters.AddWithValue("@name", book.Name);
       this._ctx.Command.Parameters.AddWithValue("@description", book.Description);
       this._ctx.Command.Parameters.AddWithValue("@category", book.Category);
