@@ -2,54 +2,39 @@ version: '3'
 
 services:
   dotnet_db:
+    image: mysql:8.0
     container_name: dotnet_db
-    build:
-      context: .
-      dockerfile: ./db/Dockerfile
-    hostname: dotnet_db
     ports:
       - "3306:3306"
     environment:
       MYSQL_USER: root
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: password
-    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci --skip-character-set-client-handshake
     volumes:
-      - "db-data:/var/lib/mysql"
+      - "db_data:/var/lib/mysql"
       - "./db/my.conf:/etc/mysql/my.conf"
-      - "./db/init/:/docker-entrypoint-initdb.d"
-    networks:
-      - esnet
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci --skip-character-set-client-handshake
 
   dotnet_elk:
-    build:
-      context: .
-      dockerfile: ./elk/Dockerfile
+    image: sebp/elk:oss-792
     container_name: dotnet_elk
     ports: 
       - 5601:5601 
-      - 9200:9200 
-      - 5044:5044
-    networks:
-      - esnet
-  
-  dotnet_filebeat:
-    mem_limit: 64m
-    build: 
-      context: .
-      dockerfile: ./filebeat/Dockerfile
-    container_name: dotnet_filebeat
+      - 9200:9200
     volumes:
-      - ../Hello/logs:/logs
-    links:
-      - dotnet_elk:dotnet_elk
-    networks:
-      - esnet
+      - "./elk/logstash.conf:/etc/logstash/conf.d/logstash.conf"
+
+  dotnet_filebeat:
+    image: docker.elastic.co/beats/filebeat:7.9.2
+    container_name: dotnet_filebeat
+    user: root
+    mem_limit: 64m
+    volumes:
+      - "../Hello/logs:/logs"
+      - "./filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml"
 
   dotnet_web:
-    build:
-      context: .
-      dockerfile: ./web/Dockerfile
+    image: mcr.microsoft.com/dotnet/core/sdk:3.1
     container_name: dotnet_web
     ports:
       - "8080:8080"
@@ -59,16 +44,7 @@ services:
     volumes:
       - ../:/dotnet-app
     command: /bin/bash -c "while sleep 1000; do :; done"
-    stdin_open: true
-    links:
-      - dotnet_elk:dotnet_elk
-      - dotnet_db:dotnet_db 
-    networks:
-      - esnet
 
 volumes:
-  db-data:
+  db_data:
     driver: local
-
-networks:
-  esnet:
