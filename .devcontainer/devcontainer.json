@@ -1,5 +1,5 @@
 {
-	"name": "asp.net core",
+	"name": "books app",
 	"dockerComposeFile": [
 	  "docker-compose.yml"
 	],
