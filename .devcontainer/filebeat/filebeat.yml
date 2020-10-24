@@ -1,7 +1,11 @@
 filebeat.inputs:
 - type: log
+  enabled: true
   paths: /logs/*.log
         
 output.logstash:
   enabled: true
-  hosts: ["dotnet_elk:5044"]
+  hosts: ["dotnet_elk:5045"]
+
+setup.kibana:
+  host: "elk:5601"
