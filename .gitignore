@@ -1,3 +1,5 @@
-Hello/bin/
-Hello/obj/
-Hello/logs/
+app/Lib/bin/
+app/Lib/obj/
+app/Web/bin/
+app/Web/obj/
+app/Web/logs/

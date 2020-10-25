@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Lib.Books.UseCase;
-using Hello.Filters;
+using Web.Filters;
 
-namespace Hello.Controllers
+namespace Web.Controllers
 {
   public class BooksController : Controller
   {

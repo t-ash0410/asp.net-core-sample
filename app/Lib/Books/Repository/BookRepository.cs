@@ -13,8 +13,8 @@ namespace Lib.Books.Repository
 
   public class BookRepository : IBookRepository
   {
-    private readonly DataAccessContext _ctx;
-    public BookRepository(DataAccessContext ctx)
+    private readonly DBContext _ctx;
+    public BookRepository(DBContext ctx)
     {
       this._ctx = ctx;
     }

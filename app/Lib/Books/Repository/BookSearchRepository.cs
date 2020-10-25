@@ -14,9 +14,9 @@ namespace Lib.Books.Repository
 
   public class BookSearchRepository : IBookSearchRepository
   {
-    private readonly BigDataAccessContext _ctx;
+    private readonly ESContext _ctx;
 
-    public BookSearchRepository(BigDataAccessContext ctx)
+    public BookSearchRepository(ESContext ctx)
     {
       this._ctx = ctx;
     }

@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc.Filters;
 using Lib.Infrastructure;
 
-namespace Hello.Filters
+namespace Web.Filters
 {
   public abstract class DataAccessFilterBase : ActionFilterAttribute
   {
@@ -9,9 +9,9 @@ namespace Hello.Filters
 
   public class DataAccessFilter : DataAccessFilterBase
   {
-    private readonly DataAccessContext _ctx;
+    private readonly DBContext _ctx;
 
-    public DataAccessFilter(DataAccessContext ctx)
+    public DataAccessFilter(DBContext ctx)
     {
       this._ctx = ctx;
     }

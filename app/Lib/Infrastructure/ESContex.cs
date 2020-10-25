@@ -3,11 +3,11 @@ using Nest;
 
 namespace Lib.Infrastructure
 {
-  public class BigDataAccessContext
+  public class ESContext
   {
     public ElasticClient Client { get; }
 
-    public BigDataAccessContext(string url)
+    public ESContext(string url)
     {
       var uri = new Uri(url);
       var setting = new ConnectionSettings(uri)

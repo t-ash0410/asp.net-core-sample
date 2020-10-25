@@ -31,7 +31,7 @@ services:
     user: root
     mem_limit: 64m
     volumes:
-      - "../Hello/logs:/logs"
+      - "../app/Web/logs:/logs"
       - "./filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml"
 
   dotnet_web:

@@ -3,13 +3,13 @@ using MySql.Data.MySqlClient;
 
 namespace Lib.Infrastructure
 {
-  public class DataAccessContext
+  public class DBContext
   {
     private string _connectionString;
     public MySqlConnection Connection { get; private set; }
     public MySqlCommand Command { get; private set; }
 
-    public DataAccessContext(string connectionString)
+    public DBContext(string connectionString)
     {
       this._connectionString = connectionString;
     }
