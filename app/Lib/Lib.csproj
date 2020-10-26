@@ -3,9 +3,6 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System.Common.Data"/>
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="MySql.Data" Version="8.0.21"/>
     <PackageReference Include="NEST" Version="7.9.0"/>
   </ItemGroup>
