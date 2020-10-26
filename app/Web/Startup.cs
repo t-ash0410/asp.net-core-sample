@@ -24,8 +24,8 @@ namespace Web
     public void ConfigureServices(IServiceCollection services)
     {
       services.AddControllersWithViews();
-      var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
-      var searchUrl = Environment.GetEnvironmentVariable("ELASTIC_SEARCH_SERVER");
+      var connectionString = this.Configuration.GetValue<string>("DB_CONNECTION_STRING");
+      var searchUrl = this.Configuration.GetValue<string>("ELASTIC_SEARCH_SERVER");
       services.AddScoped<Lib.Infrastructure.DBContext>((s) => new Lib.Infrastructure.DBContext(connectionString));
       services.AddScoped<Lib.Infrastructure.ESContext>((s) => new Lib.Infrastructure.ESContext(searchUrl));
       services.AddScoped<Lib.Books.Repository.IBookRepository, Lib.Books.Repository.BookRepository>();
