@@ -9,9 +9,9 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/Hello/bin/Debug/netcoreapp3.1/Hello.dll",
+            "program": "${workspaceFolder}/app/Web/bin/Debug/netcoreapp3.1/Web.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/Hello",
+            "cwd": "${workspaceFolder}/app/Web",
             "stopAtEntry": false,
             "serverReadyAction": {
                 "action": "openExternally",
